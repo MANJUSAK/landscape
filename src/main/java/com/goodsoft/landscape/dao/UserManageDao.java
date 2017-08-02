@@ -3,6 +3,7 @@ package com.goodsoft.landscape.dao;
 import com.goodsoft.landscape.entity.users.Grade;
 import com.goodsoft.landscape.entity.users.Rights;
 import com.goodsoft.landscape.entity.users.User;
+import com.goodsoft.landscape.entity.users.UserInfo;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public interface UserManageDao {
 
     // 用户登录dao接口
-    public User login(User user);
+    public UserInfo login(User user);
 
     // 检查用户名是否重复dao接口
     public boolean checkName(String name);

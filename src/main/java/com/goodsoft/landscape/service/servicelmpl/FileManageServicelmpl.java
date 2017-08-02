@@ -1,8 +1,9 @@
 package com.goodsoft.landscape.service.servicelmpl;
 
 import com.goodsoft.landscape.dao.FileManageDao;
+import com.goodsoft.landscape.entity.file.ExcelFile;
 import com.goodsoft.landscape.service.FileManageService;
-import com.goodsoft.landscape.util.resulteutil.ResultOne;
+import com.goodsoft.landscape.util.resulteutil.Result;
 import com.goodsoft.landscape.util.resulteutil.Status;
 import com.goodsoft.landscape.util.resulteutil.StatusEnum;
 import com.goodsoft.landscape.util.utillmpl.DomainNameUtil;
@@ -28,30 +29,30 @@ public class FileManageServicelmpl implements FileManageService {
     private Logger logger = Logger.getLogger(DeviceManageServicelmpl.class);
     //实例化服务器域名地址工具类
     private DomainNameUtil http = DomainNameUtil.getInstance();
-    //实例化返回结果集实体类
-    private ResultOne result = null;
 
     /**
-     * 查询文件数据
+     * 查询excel文件数据
      * <p>
      *
      * @return 查询数据
      * @parameter var 所需用户信息，request http请求（用于获取服务器域名地址方便下载文件），c 封装类
      */
     @Override
-    public <T> T queryFileService(String arg, HttpServletRequest request, Class c) {
-        List data = null;
+    public <T> T queryFileService(String arg, HttpServletRequest request) {
+        List<ExcelFile> data = null;
         try {
-            data = this.dao.queryFileDao(arg, c);
+            data = this.dao.queryFileDao(arg, ExcelFile.class);
         } catch (Exception e) {
             System.out.println(e.toString());
             this.logger.error(e);
             return (T) new Status(StatusEnum.SERVER_ERROR.getCODE(), StatusEnum.SERVER_ERROR.getEXPLAIN());
         }
         if (data.size() > 0) {
-            this.result = new ResultOne(0, data);
-            this.result.setPath(this.http.getDomainName(request).toString());
-            return (T) this.result;
+            String var = this.http.getDomainName(request).toString();
+            for (int i = 0, length = data.size(); i < length; ++i) {
+                data.get(i).setPath(var + data.get(i).getPath());
+            }
+            return (T) new Result(0, data);
         } else {
             return (T) new Status(StatusEnum.NO_DATA.getCODE(), StatusEnum.NO_DATA.getEXPLAIN());
         }

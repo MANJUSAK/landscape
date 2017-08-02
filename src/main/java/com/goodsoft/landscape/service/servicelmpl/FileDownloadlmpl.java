@@ -7,7 +7,7 @@ import com.goodsoft.landscape.service.FileManageService;
 import com.goodsoft.landscape.service.SystemPrivilegesService;
 import com.goodsoft.landscape.util.ExcelUtil;
 import com.goodsoft.landscape.util.resulteutil.Parameter;
-import com.goodsoft.landscape.util.resulteutil.ResultOne;
+import com.goodsoft.landscape.util.resulteutil.Result;
 import com.goodsoft.landscape.util.resulteutil.Status;
 import com.goodsoft.landscape.util.resulteutil.StatusEnum;
 import com.goodsoft.landscape.util.utillmpl.DomainNameUtil;
@@ -36,8 +36,7 @@ public class FileDownloadlmpl implements FileDownload {
     private DeviceManageDao deviceDao;
     //实例化服务器域名地址工具类
     private DomainNameUtil http = DomainNameUtil.getInstance();
-    //实例化返回结果集实体类
-    private ResultOne result = null;
+
 
     //实例化日志管理工具类
     private Logger logger = Logger.getLogger(FileDownloadlmpl.class);
@@ -79,8 +78,8 @@ public class FileDownloadlmpl implements FileDownload {
         if (var3 == false) {
             return (T) new Status(StatusEnum.SERVER_ERROR.getCODE(), StatusEnum.SERVER_ERROR.getEXPLAIN());
         }
-        this.result = new ResultOne(0, var2);
-        this.result.setPath(this.http.getDomainName(request).toString());
-        return (T) this.result;
+        StringBuilder var4 = new StringBuilder(this.http.getDomainName(request).toString());
+        var4.append(var2);
+        return (T) new Result(0, var4);
     }
 }

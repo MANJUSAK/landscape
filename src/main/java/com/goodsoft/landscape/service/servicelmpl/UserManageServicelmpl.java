@@ -4,15 +4,15 @@ import com.goodsoft.landscape.dao.UserManageDao;
 import com.goodsoft.landscape.entity.users.Grade;
 import com.goodsoft.landscape.entity.users.Rights;
 import com.goodsoft.landscape.entity.users.User;
+import com.goodsoft.landscape.entity.users.UserInfo;
 import com.goodsoft.landscape.service.UserManageServie;
+import com.goodsoft.landscape.util.resulteutil.Result;
+import com.goodsoft.landscape.util.resulteutil.Status;
+import com.goodsoft.landscape.util.resulteutil.StatusEnum;
 import com.goodsoft.landscape.util.utillmpl.CreateMD5Util;
 import com.goodsoft.landscape.util.utillmpl.DomainNameUtil;
 import com.goodsoft.landscape.util.utillmpl.UUIDUtil;
 import com.goodsoft.landscape.util.utillmpl.UserFileUploadUtil;
-import com.goodsoft.landscape.util.resulteutil.ResultOne;
-import com.goodsoft.landscape.util.resulteutil.ResultTwo;
-import com.goodsoft.landscape.util.resulteutil.Status;
-import com.goodsoft.landscape.util.resulteutil.StatusEnum;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -44,20 +44,17 @@ public class UserManageServicelmpl implements UserManageServie {
     private UserFileUploadUtil userFile = UserFileUploadUtil.getInstance();
     // 实例化md5加密类
     private CreateMD5Util md5 = CreateMD5Util.getInstance();
-    // 实例化结果集实体类
-    private ResultOne resultOne = null;
-    private ResultTwo resultTwo = null;
+    private Result result = null;
     // 实例化服务器域名地址工具类
     private DomainNameUtil domainName = DomainNameUtil.getInstance();
     //实例化uuid工具类
     private UUIDUtil uuid = UUIDUtil.getInstance();
 
-    /*
+    /**
      * 功能：用户登录接口实现类
      *
-     * @parameter user 用户信息、request http请求
-     *
      * @return object对象
+     * @parameter user 用户信息、request http请求
      */
     public <T> T login(User user, HttpServletRequest request) {
         // 进行md5解密
@@ -72,7 +69,7 @@ public class UserManageServicelmpl implements UserManageServie {
             return (T) new Status(StatusEnum.ERROR.getCODE(), StatusEnum.ERROR.getEXPLAIN());
         }
         user.setPassWord(pw.toString().toUpperCase());
-        User data = null;
+        UserInfo data = null;
         try {
             data = this.dao.login(user);
         } catch (Exception e) {
@@ -83,13 +80,12 @@ public class UserManageServicelmpl implements UserManageServie {
         }
         if (data != null) {
             if (!"null".equals(data.getHead())) {
-                this.resultOne = new ResultOne(0, data);
-                this.resultOne.setPath(this.domainName.getDomainName(request)
-                        .toString());
-                return (T) this.resultOne;
+                data.setHead(this.domainName.getDomainName(request).toString() + data.getHead());
+                this.result = new Result(0, data);
+                return (T) this.result;
             } else {
-                this.resultTwo = new ResultTwo(0, data);
-                return (T) this.resultTwo;
+                this.result = new Result(0, data);
+                return (T) this.result;
             }
 
         } else {
@@ -98,12 +94,11 @@ public class UserManageServicelmpl implements UserManageServie {
 
     }
 
-    /*
+    /**
      * 功能：用户注册接口实现类
      *
-     * @parameter user 用户信息、files 用户头像、request http请求
-     *
      * @return 注册提示信息
+     * @parameter user 用户信息、files 用户头像、request http请求
      */
     @Transactional
     public Status register(MultipartFile files, User user, HttpServletRequest request) {
@@ -148,7 +143,7 @@ public class UserManageServicelmpl implements UserManageServie {
         user.setHead(msg);
         user.setUid(this.uuid.getUUID().toString());
         try {
-            Grade grade = this.dao.queryRightsById(0);
+            Grade grade = this.dao.queryRightsById(user.getLevel());
             user.setRoleId(grade.getRoleId());
             this.dao.register(user);
             return new Status(StatusEnum.SUCCESS.getCODE(), StatusEnum.SUCCESS.getEXPLAIN());
@@ -161,13 +156,12 @@ public class UserManageServicelmpl implements UserManageServie {
         }
     }
 
-    /*
-       * 功能：服务器启动初始化系统权限管理
-       *
-       * @parameter 无
-       *
-       * @return Boolean
-       */
+    /**
+     * 功能：服务器启动初始化系统权限管理
+     *
+     * @return Boolean
+     * @parameter 无
+     */
     @Override
     @Transactional
     public boolean rightsInitialization() {
@@ -212,13 +206,12 @@ public class UserManageServicelmpl implements UserManageServie {
         }
     }
 
-    /*
-       * 功能：检查系统权限数据是否存在（防止服务器重启再次初始化权限数据）
-       *
-       * @parameter 无
-       *
-       * @return Boolean
-    */
+    /**
+     * 功能：检查系统权限数据是否存在（防止服务器重启再次初始化权限数据）
+     *
+     * @return Boolean
+     * @parameter 无
+     */
     @SuppressWarnings("unchecked")
     @Override
     @Transactional

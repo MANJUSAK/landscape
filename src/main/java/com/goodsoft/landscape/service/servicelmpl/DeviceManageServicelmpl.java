@@ -61,7 +61,7 @@ public class DeviceManageServicelmpl implements DeviceManageService {
             return (T) new Status(StatusEnum.SERVER_ERROR.getCODE(), StatusEnum.SERVER_ERROR.getEXPLAIN());
         }
         if (data.size() > 0) {
-            return (T) new ResultTwo(0, data);
+            return (T) new Result(0, data);
         }
         return (T) new Status(StatusEnum.NO_DATA.getCODE(), StatusEnum.NO_DATA.getEXPLAIN());
     }

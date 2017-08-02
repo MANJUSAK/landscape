@@ -15,7 +15,7 @@ public class UserFileUploadUtil {
 
     public static UserFileUploadUtil getInstance() {
         if (instance == null) {
-            synchronized (FileUploadUtillmpl.class) {
+            synchronized (UserFileUploadUtil.class) {
                 if (instance == null)
                     instance = new UserFileUploadUtil();
             }

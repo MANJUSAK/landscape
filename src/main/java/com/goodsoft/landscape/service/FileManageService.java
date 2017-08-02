@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface FileManageService {
     //文件查询
-    public <T> T queryFileService(String arg, HttpServletRequest request, Class c);
+    public <T> T queryFileService(String arg, HttpServletRequest request);
 
     //文件保存
     public boolean saveFileService(Object var);

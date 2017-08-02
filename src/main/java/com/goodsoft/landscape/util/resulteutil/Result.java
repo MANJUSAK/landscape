@@ -7,7 +7,7 @@ package com.goodsoft.landscape.util.resulteutil;
  *
  * @author 严彬荣
  */
-public class ResultTwo implements java.io.Serializable {
+public class Result implements java.io.Serializable {
 
     private static final long serialVersionUID = 8484593320970244294L;
     // 状态码
@@ -15,12 +15,12 @@ public class ResultTwo implements java.io.Serializable {
     // 返回数据
     private Object data;
 
-    public ResultTwo() {
+    public Result() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public ResultTwo(int code, Object data) {
+    public Result(int code, Object data) {
         super();
         this.code = code;
         this.data = data;

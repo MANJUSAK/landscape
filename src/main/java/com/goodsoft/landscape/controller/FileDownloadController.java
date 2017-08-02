@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by 严彬荣 on 2017/7/27.
  */
 @Controller
-@RequestMapping("/excel/download")
+@RequestMapping("/download")
 public class FileDownloadController {
 
     @Resource
@@ -30,7 +30,7 @@ public class FileDownloadController {
      * @parameter uid 用户编号，roleId 权限编号，types excel表类型，excel excel表名，id 数据库对应表id
      */
     @ResponseBody
-    @RequestMapping(value = "/mechanical", produces = "application/json;charset=utf-8", method = {RequestMethod.GET})
+    @RequestMapping(value = "/excel/mechanical", produces = "application/json;charset=utf-8", method = {RequestMethod.GET})
     public Object mechanicalDownload(HttpServletRequest request, Parameter var) {
         return this.service.exceldownload(request, var, MechanicalEQ.class);
     }
@@ -42,7 +42,7 @@ public class FileDownloadController {
      * @parameter uid 用户编号，roleId 权限编号，types excel表类型，excel excel表名，id 数据库对应表id
      */
     @ResponseBody
-    @RequestMapping(value = "/drive", produces = "application/json;charset=utf-8", method = {RequestMethod.GET})
+    @RequestMapping(value = "/excel/drive", produces = "application/json;charset=utf-8", method = {RequestMethod.GET})
     public Object driveDownload(HttpServletRequest request, Parameter var) {
         return this.service.exceldownload(request, var, DrivingRecord.class);
     }

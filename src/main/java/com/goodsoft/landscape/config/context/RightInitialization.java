@@ -14,18 +14,18 @@ import javax.annotation.Resource;
 @Component
 public class RightInitialization implements CommandLineRunner {
     @Resource
-    private UserManageServie servie;
+    private UserManageServie service;
 
     @Override
     public void run(String... args) throws Exception {
         System.out.println(">>>>>>>>>>>>>>>初始化系统数据...<<<<<<<<<<<<<");
-        boolean tip = this.servie.queryRights();
+        boolean tip = this.service.queryRights();
         if (tip == false) {
             System.out.println(">>>>>>>>>>>>>>>初始化系统数据成功<<<<<<<<<<<<<");
         } else {
-            boolean tip2 = this.servie.rightsInitialization();
+            boolean tip2 = this.service.rightsInitialization();
             if (tip2 == false) {
-                System.out.println(">>>>>>>>>>>>>>>初始化系统数据成功<<<<<<<<<<<<<");
+                System.out.println(">>>>>>>>>>>>>>>初始化系统数据失败<<<<<<<<<<<<<");
             } else {
                 System.out.println(">>>>>>>>>>>>>>>初始化系统数据成功<<<<<<<<<<<<<");
             }

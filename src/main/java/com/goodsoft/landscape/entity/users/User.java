@@ -1,6 +1,8 @@
 package com.goodsoft.landscape.entity.users;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * function 用户信息表实体
@@ -27,12 +29,18 @@ public class User implements java.io.Serializable {
     private String tel;
     // 头像
     private String head;
+    //注册时间
+    private String dates;
+    //初始用户权限等级
+    private int level;
     // 数据状态参数
     private int isNo;
 
     public User() {
         super();
+        this.level = 0;
         this.isNo = 0;
+        this.dates = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         // TODO Auto-generated constructor stub
     }
 
@@ -41,12 +49,13 @@ public class User implements java.io.Serializable {
         this.id = id;
     }
 
-    public User(String uid, String roleId, String userName, String tel, String head) {
+    public User(String uid, String roleId, String userName, String tel, String head, String dates) {
         this.uid = uid;
         this.roleId = roleId;
         this.userName = userName;
         this.tel = tel;
         this.head = head;
+        this.dates = dates;
     }
 
     @Id
@@ -124,6 +133,24 @@ public class User implements java.io.Serializable {
 
     public void setIsNo(int isNo) {
         this.isNo = isNo;
+    }
+
+    @Column(name = "dates", nullable = false, length = 30)
+    public String getDates() {
+        return dates;
+    }
+
+    public void setDates(String dates) {
+        this.dates = dates;
+    }
+
+    @Transient
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }
 
