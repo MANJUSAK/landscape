@@ -61,7 +61,7 @@ public class UserManageDaolmpl extends FactoryDao implements UserManageDao {
         dc.add(Restrictions.eq("userName", name));
         dc.setProjection(field);
         List data = dc.getExecutableCriteria(super.getSession()).list();
-        if (data.size() < 0) {
+        if (data.size() == 0) {
             return true;
         }
         return false;
@@ -80,7 +80,7 @@ public class UserManageDaolmpl extends FactoryDao implements UserManageDao {
         dc.add(Restrictions.eq("tel", tel));
         dc.setProjection(field);
         List data = dc.getExecutableCriteria(super.getSession()).list();
-        if (data.size() < 0) {
+        if (data.size() == 0) {
             return true;
         }
         return false;
