@@ -206,12 +206,13 @@ public class ExcelUtillmpl implements ExcelUtil {
         font.setBoldweight(XSSFFont.BOLDWEIGHT_NORMAL);
         // 把字体应用到当前的样式中
         style.setFont(font);
-        if ("mechanical".equals(excel)) {
-            return this.mechanical(wb, sheet, style, list);
-        } else if ("drive".equals(excel)) {
-            return this.drivingRecord(wb, sheet, style, list);
-        } else {
-            return null;
+        switch (excel) {
+            case "mechanical":
+                return this.mechanical(wb, sheet, style, list);
+            case "drive":
+                return this.drivingRecord(wb, sheet, style, list);
+            default:
+                return null;
         }
 
     }
